@@ -1,12 +1,9 @@
-﻿#include <iostream>
 #include <algorithm>
+#include <iostream>
 
 #include "害虫.h"
 
-害虫::害虫(std::string 名字, std::vector<std::string> 特征, int 年龄)
-    : 名字(名字), 特征(特征), 年龄(年龄)
-{
-}
+害虫::害虫(std::string 名字, std::vector<std::string> 特征, int 年龄) : 名字(名字), 特征(特征), 年龄(年龄) {}
 
 害虫::~害虫()
 {
@@ -40,7 +37,8 @@ void 害虫::设置特征(const std::vector<std::string>& 新特征)
 
 void 害虫::设置年龄(int 新年龄)
 {
-    if (新年龄 >= 0) {
+    if (新年龄 >= 0)
+    {
         年龄 = 新年龄;
     }
 }
@@ -52,13 +50,17 @@ void 害虫::显示信息() const
     std::cout << "年龄: " << 年龄 << std::endl;
     std::cout << "特征: ";
 
-    if (特征.empty()) {
+    if (特征.empty())
+    {
         std::cout << "无特征";
     }
-    else {
-        for (size_t i = 0; i < 特征.size(); ++i) {
+    else
+    {
+        for (size_t i = 0; i < 特征.size(); ++i)
+        {
             std::cout << 特征[i];
-            if (i != 特征.size() - 1) {
+            if (i != 特征.size() - 1)
+            {
                 std::cout << ", ";
             }
         }
@@ -70,7 +72,8 @@ void 害虫::添加特征(const std::string& 新特征)
 {
     // 检查是否已存在该特征
     auto it = std::find(特征.begin(), 特征.end(), 新特征);
-    if (it == 特征.end()) {
+    if (it == 特征.end())
+    {
         特征.push_back(新特征);
     }
 }
@@ -78,7 +81,8 @@ void 害虫::添加特征(const std::string& 新特征)
 void 害虫::删除特征(const std::string& 要删除的特征)
 {
     auto it = std::find(特征.begin(), 特征.end(), 要删除的特征);
-    if (it != 特征.end()) {
+    if (it != 特征.end())
+    {
         特征.erase(it);
     }
 }
@@ -90,14 +94,16 @@ void 害虫::清除特征()
 
 void 害虫::增加年龄(int 年数)
 {
-    if (年数 > 0) {
+    if (年数 > 0)
+    {
         年龄 += 年数;
     }
 }
 
 void 害虫::减少年龄(int 年数)
 {
-    if (年数 > 0) {
+    if (年数 > 0)
+    {
         年龄 = std::max(0, 年龄 - 年数);
     }
 }
@@ -107,22 +113,27 @@ void 害虫::行为()
     std::cout << 名字 << "正在活动..." << std::endl;
 
     // 根据特征显示不同的行为
-    if (!特征.empty()) {
+    if (!特征.empty())
+    {
         std::cout << "当前特征: ";
-        for (const auto& 特质 : 特征) {
+        for (const auto& 特质 : 特征)
+        {
             std::cout << 特质 << " ";
         }
         std::cout << std::endl;
     }
 
     // 根据年龄显示不同的行为状态
-    if (年龄 == 0) {
+    if (年龄 == 0)
+    {
         std::cout << "这是新生的害虫" << std::endl;
     }
-    else if (年龄 < 3) {
+    else if (年龄 < 3)
+    {
         std::cout << "这是年轻的害虫，活动活跃" << std::endl;
     }
-    else {
+    else
+    {
         std::cout << "这是成熟的害虫，经验丰富" << std::endl;
     }
 }

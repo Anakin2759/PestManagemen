@@ -2,27 +2,27 @@
 #include <string>
 #include <vector>
 
-class 害虫
+class 瀹宠櫕
 {
-public:
-    害虫(std::string 名字,std::vector<std::string> 特征,int 年龄 );
-    ~害虫();
-    int 获取年龄() const;
-    std::string 获取名字() const;
-    std::vector<std::string> 获取特征() const;
-    void 设置名字(const std::string& 名字);
-    void 设置特征(const std::vector<std::string>& 特征);
-    void 设置年龄(int 年龄);
-    void 显示信息() const;
-    void 添加特征(const std::string& 特征);
-    void 删除特征(const std::string& 特征);
-    void 清除特征();
-    void 增加年龄(int 年龄);
-    void 减少年龄(int 年龄);
-    void 行为();
-private:
-    std::string 名字;
-    std::vector<std::string> 特征;
-    int 年龄;
-};
+  public:
+    瀹宠櫕(std::string 鍚嶅瓧, std::vector<std::string> 鐗瑰緛, int 骞撮緞);
+    ~瀹宠櫕();
+    int 鑾峰彇骞撮緞() const;
+    std::string 鑾峰彇鍚嶅瓧() const;
+    std::vector<std::string> 鑾峰彇鐗瑰緛() const;
+    void 璁剧疆鍚嶅瓧(const std::string &鍚嶅瓧);
+    void 璁剧疆鐗瑰緛(const std::vector<std::string> &鐗瑰緛);
+    void 璁剧疆骞撮緞(int 骞撮緞);
+    void 鏄剧ず淇℃伅() const;
+    void 娣诲姞鐗瑰緛(const std::string &鐗瑰緛);
+    void 鍒犻櫎鐗瑰緛(const std::string &鐗瑰緛);
+    void 娓呴櫎鐗瑰緛();
+    void 澧炲姞骞撮緞(int 骞撮緞);
+    void 鍑忓皯骞撮緞(int 骞撮緞);
+    void 琛屼负();
 
+  private:
+    std::string 鍚嶅瓧;
+    std::vector<std::string> 鐗瑰緛;
+    int 骞撮緞;
+};
