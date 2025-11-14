@@ -1,0 +1,41 @@
+#include <iostream>
+
+#include "害虫.h"
+
+int main() {
+    std::cout << "=== 害虫管理系统测试 ===" << std::endl;
+
+    // 1. 创建害虫对象
+    std::cout << "\n1. 创建害虫对象：" << std::endl;
+    std::vector<std::string> 初始特征 = { "嘴硬", "思想顽固", "喜欢吹牛" };
+    害虫 害虫1("害虫", 初始特征, 1);
+    害虫1.显示信息();
+
+    // 2. 测试获取方法
+    std::cout << "\n2. 测试获取方法：" << std::endl;
+    std::cout << "名字: " << 害虫1.获取名字() << std::endl;
+    std::cout << "年龄: " << 害虫1.获取年龄() << std::endl;
+    std::vector<std::string> 特征列表 = 害虫1.获取特征();
+    std::cout << "特征数量: " << 特征列表.size() << std::endl;
+
+    // 3. 测试设置方法
+    std::cout << "\n3. 测试设置方法：" << std::endl;
+    害虫1.设置名字("害虫");
+    害虫1.设置年龄(50);
+    害虫1.显示信息();
+
+    // 4. 测试年龄管理
+    std::cout << "\n4. 测试年龄管理：" << std::endl;
+    害虫1.增加年龄(1);
+    std::cout << "增加1岁后，年龄: " << 害虫1.获取年龄() << std::endl;
+
+    害虫1.减少年龄(1);
+    std::cout << "减少1岁后，年龄: " << 害虫1.获取年龄() << std::endl;
+
+    // 5. 测试行为方法
+    std::cout << "\n5. 测试行为方法：" << std::endl;
+    害虫1.行为();
+    std::cout << "\n=== 生成害虫完毕 ===" << std::endl;
+
+    return 0;
+}

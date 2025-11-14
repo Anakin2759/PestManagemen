@@ -1,0 +1,28 @@
+#pragma once
+#include <string>
+#include <vector>
+
+class 害虫
+{
+public:
+    害虫(std::string 名字,std::vector<std::string> 特征,int 年龄 );
+    ~害虫();
+    int 获取年龄() const;
+    std::string 获取名字() const;
+    std::vector<std::string> 获取特征() const;
+    void 设置名字(const std::string& 名字);
+    void 设置特征(const std::vector<std::string>& 特征);
+    void 设置年龄(int 年龄);
+    void 显示信息() const;
+    void 添加特征(const std::string& 特征);
+    void 删除特征(const std::string& 特征);
+    void 清除特征();
+    void 增加年龄(int 年龄);
+    void 减少年龄(int 年龄);
+    void 行为();
+private:
+    std::string 名字;
+    std::vector<std::string> 特征;
+    int 年龄;
+};
+
