@@ -1,7 +1,9 @@
+#include <sstream>
 #include <iostream>
-
+#include <entt/entt.hpp>
+#include <proxy/proxy.h>
+#include "src/context/GameContext.h"
 int main()
 {
-    std::cout << "PestManKill started." << std::endl;
-    return 0;
+    GameContext gameContext;
 }

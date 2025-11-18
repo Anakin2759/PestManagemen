@@ -6,28 +6,18 @@
 Language: Cpp
 Standard: Latest
 
+
 # 缩进配置
 IndentWidth: 4                          # 缩进宽度 4 个空格
 TabWidth: 4                             # Tab 宽度
 UseTab: Never                           # 不使用 Tab，使用空格
 IndentCaseLabels: true                  # case 标签缩进
 IndentPPDirectives: None                # 预处理指令不缩进
-IndentWrappedFunctionNames: false       # 包装的函数名不缩进
+IndentWrappedFunctionNames: true      # 包装的函数名缩进
 
 # 大括号风格（微软风格）
 BreakBeforeBraces: Allman               # Allman 风格大括号（微软常用）
-# 或者使用 Custom 自定义：
-# BreakBeforeBraces: Custom
-# BraceWrapping:
-#   AfterClass: true
-#   AfterControlStatement: true
-#   AfterEnum: true
-#   AfterFunction: true
-#   AfterNamespace: true
-#   AfterStruct: true
-#   AfterUnion: true
-#   BeforeCatch: true
-#   BeforeElse: true
+
 
 # 列宽和换行
 ColumnLimit: 120                        # 行长度限制
@@ -38,7 +28,7 @@ BreakInheritanceList: BeforeColon       # 继承列表在冒号前换行
 
 # 函数和参数
 AllowShortFunctionsOnASingleLine: Inline   # 只允许内联函数在单行
-AllowShortIfStatementsOnASingleLine: Never # 不允许短 if 语句在单行
+AllowShortIfStatementsOnASingleLine: WithoutElse # 不允许短 if 语句在单行
 AllowShortLoopsOnASingleLine: false     # 不允许短循环在单行
 AllowShortCaseLabelsOnASingleLine: false # 不允许短 case 标签在单行
 AllowShortBlocksOnASingleLine: Never    # 不允许短代码块在单行

@@ -13,6 +13,8 @@
  * ************************************************************************
  */
 #pragma once
+#include "src/common/Common.h"
+#include <cstdint>
 #include <entt/entt.hpp>
 
 struct DamageEvent
@@ -24,8 +26,8 @@ struct DamageEvent
 
 struct TurnPhaseEvent
 {
-    entt::entity player; // 当前回合角色
-    uint8_t phase;       // 当前阶段，参考 TurnPhase 枚举
+    entt::entity player;    // 当前回合角色
+    TurnPhase currentPhase; // 当前阶段，参考 TurnPhase 枚举
 };
 
 struct CharacterDeathEvent
@@ -40,9 +42,24 @@ struct CardUsedEvent
     entt::entity card;   // 使用的牌
 };
 
+struct CardDrawnEvent
+{
+    entt::entity player; // 摸牌角色
+    entt::entity card;   // 摸到的牌
+    uint8_t count;       // 摸牌数量
+};
+
+struct CardDiscardedEvent
+{
+    entt::entity player; // 弃牌角色
+    entt::entity card;   // 弃掉的牌
+    uint8_t count;       // 弃牌数量
+};
+
 struct GameStartEvent
 {
     // 可以添加游戏开始时需要的信息
+    uint8_t playerCount; // 玩家数量
 };
 
 struct GameEndEvent
