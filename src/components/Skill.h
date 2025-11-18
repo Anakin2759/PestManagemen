@@ -17,6 +17,7 @@
 #include <string>
 #include <functional>
 #include <entt/entt.hpp>
+#include <vector>
 
 struct Effect
 {
@@ -26,5 +27,8 @@ struct Effect
 struct Skill
 {
     std::string name;
-    std::function<void(entt::registry&, entt::entity&, entt::any)> onTrigger; // or custom signature
+    entt::entity owner;
+    std::vector<entt::entity> target;
+    std::function<void(entt::registry&, entt::entity&, std::vector<entt::entity>&, entt::any)>
+        onTrigger; // or custom signature
 };

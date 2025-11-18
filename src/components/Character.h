@@ -17,7 +17,6 @@
 #include <entt/entity/fwd.hpp>
 #include <string>
 #include <cstdint>
-#include <functional>
 #include <entt/entt.hpp>
 #include "../common/Common.h"
 #include "Skill.h"
@@ -27,7 +26,7 @@ struct MetaCharacterInfo
     std::string name;
     uint32_t id;
     std::string tag;
-    bool Gender;
+    Gender gender;
 };
 
 struct Identity
@@ -70,12 +69,11 @@ struct Attributes
     uint8_t rank = 0;
 };
 
-
 struct Status
 {
-    uint8_t duration = 0;   // 持续回合数，0表示永久
-    TurnPhase appliedPhase; // 状态应用的阶段
-    StatusType type;
+    uint8_t duration = 0;                      // 持续回合数，0表示永久
+    TurnPhase appliedPhase = TurnPhase::START; // 状态应用的阶段
+    StatusType type = StatusType::POISONED;    // 状态类型
 };
 
 struct StatusFlags
@@ -83,7 +81,8 @@ struct StatusFlags
     std::vector<Status> statusList; // 角色状态列表
 };
 
-inline entt::entity createCharacter(entt::registry& reg, std::string name, IdentityType identity, FactionType faction)
+inline entt::entity
+    CreateCharacter(entt::registry& reg, const std::string& name, IdentityType identity, FactionType faction)
 {
     auto e = reg.create();
 

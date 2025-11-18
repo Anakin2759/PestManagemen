@@ -18,7 +18,6 @@
 #pragma once
 
 #include <entt/entt.hpp>
-#include "src/common/Common.h"
 #include "src/context/GameContext.h"
 class TurnManager
 {
@@ -26,5 +25,4 @@ public:
     void work(GameContext& context);
 
 private:
-    
 };

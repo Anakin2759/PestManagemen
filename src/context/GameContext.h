@@ -20,5 +20,5 @@ struct GameContext
 {
     entt::registry registry;     // 实体组件系统注册表
     entt::dispatcher dispatcher; // 事件分发器
-    std::shared_ptr<spdlog::logger> logger = createRollingLogger();
+    std::shared_ptr<spdlog::logger> logger = CreateRollingLogger();
 };

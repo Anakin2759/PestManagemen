@@ -19,7 +19,9 @@
 #include <entt/entt.hpp>
 #include "src/context/GameContext.h"
 
-PRO_DEF_MEM_DISPATCH(MemWork, Work);
+
+PRO_DEF_MEM_DISPATCH(MemWork, work); 
+
 
 struct ISystem : pro::facade_builder ::add_convention<MemWork, void(GameContext&) noexcept>::support_copy<
                      pro::constraint_level::nontrivial>::build

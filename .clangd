@@ -1,5 +1,3 @@
-# OpenGL C++23 项目的 clangd 配置
-# https://clangd.llvm.org/config
 
 CompileFlags:
   # 使用项目根目录的 compile_commands.json
