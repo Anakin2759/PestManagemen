@@ -19,14 +19,13 @@
 #include <cstdint>
 #include <entt/entt.hpp>
 #include "../common/Common.h"
-#include "Skill.h"
 
 struct MetaCharacterInfo
 {
     std::string name;
     uint32_t id;
     std::string tag;
-    Gender gender;
+    Gender gender; //
 };
 
 struct Identity
@@ -42,7 +41,7 @@ struct Faction
 
 struct Skills
 {
-    std::vector<Skill> skillList;
+    std::vector<entt::entity> skillList;
 };
 
 struct HandCards
@@ -67,6 +66,7 @@ struct Attributes
     uint32_t attackRange = 1;
     uint32_t movement = 1;
     uint8_t rank = 0;
+    uint8_t attackTimes = 1;
 };
 
 struct Status
@@ -81,8 +81,8 @@ struct StatusFlags
     std::vector<Status> statusList; // 角色状态列表
 };
 
-inline entt::entity
-    CreateCharacter(entt::registry& reg, const std::string& name, IdentityType identity, FactionType faction)
+inline entt::entity CreateCharacter(
+    entt::registry& reg, const std::string& name, IdentityType identity, FactionType faction, const Skills& skills)
 {
     auto e = reg.create();
 
@@ -91,7 +91,7 @@ inline entt::entity
     reg.emplace<Faction>(e, Faction{faction});
     reg.emplace<Attributes>(e);
     reg.emplace<StatusFlags>(e);
-    reg.emplace<Skills>(e);
+    reg.emplace<Skills>(e, skills);
     reg.emplace<HandCards>(e);
     reg.emplace<Equipments>(e);
 

@@ -14,21 +14,43 @@
  */
 
 #pragma once
+#include <entt/entity/fwd.hpp>
 #include <string>
 #include <functional>
 #include <entt/entt.hpp>
 #include <vector>
-
+#include "src/common/Common.h"
 struct Effect
 {
-    std::function<void(entt::entity user, entt::entity target, entt::registry& reg)> apply;
+    SkillType type;
+    std::function<void(entt::entity user, std::vector<entt::entity> target, entt::registry& reg)> apply;
+    std::vector<entt::entity> target;
 };
 
-struct Skill
+struct MetaSkillInfo
 {
     std::string name;
-    entt::entity owner;
-    std::vector<entt::entity> target;
-    std::function<void(entt::registry&, entt::entity&, std::vector<entt::entity>&, entt::any)>
-        onTrigger; // or custom signature
+    std::string description; // 新增描述字段
+};
+
+struct SkillOwner
+{
+    entt::entity owner = entt::null;
+};
+
+inline entt::entity
+    CreateSkill(const MetaSkillInfo& info, const Effect& effect, const SkillOwner& owner, entt::registry& reg)
+{
+    auto e = reg.create();
+    reg.emplace<MetaSkillInfo>(e, info);
+    reg.emplace<Effect>(e, effect);
+    reg.emplace<SkillOwner>(e, owner);
+    return e;
+}
+
+inline void WuShengFunc(entt::entity user, std::vector<entt::entity> target, entt::registry& reg) {
+
+};
+inline void WuShuangFunc(entt::entity user, std::vector<entt::entity> target, entt::registry& reg) {
+
 };
