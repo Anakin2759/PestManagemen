@@ -25,6 +25,7 @@ cmake_install.cmake
 install_manifest.txt
 CTestTestfile.cmake
 _deps/
+.cache/
 
 # IDE 和编辑器文件
 .vscode/
