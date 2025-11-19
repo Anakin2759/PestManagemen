@@ -25,7 +25,11 @@ struct MetaCharacterInfo
     std::string name;
     uint32_t id;
     std::string tag;
-    Gender gender; //
+};
+
+struct Gender
+{
+    GenderType type;
 };
 
 struct Identity
@@ -67,13 +71,14 @@ struct Attributes
     uint32_t movement = 1;
     uint8_t rank = 0;
     uint8_t attackTimes = 1;
+    bool isAlive = true;
 };
 
 struct Status
 {
-    uint8_t duration = 0;                      // 持续回合数，0表示永久
-    TurnPhase appliedPhase = TurnPhase::START; // 状态应用的阶段
-    StatusType type = StatusType::POISONED;    // 状态类型
+    uint8_t duration = 0;                               // 持续回合数，0表示永久
+    TurnPhase appliedPhase = TurnPhase::START;          // 状态应用的阶段
+    StatusType type = StatusType::HORIZONTAL_PLACEMENT; // 状态类型
 };
 
 struct StatusFlags
@@ -81,12 +86,15 @@ struct StatusFlags
     std::vector<Status> statusList; // 角色状态列表
 };
 
-inline entt::entity CreateCharacter(
-    entt::registry& reg, const std::string& name, IdentityType identity, FactionType faction, const Skills& skills)
+inline entt::entity CreateCharacter(entt::registry& reg,
+                                    const MetaCharacterInfo& info,
+                                    IdentityType identity,
+                                    FactionType faction,
+                                    const Skills& skills)
 {
     auto e = reg.create();
 
-    reg.emplace<MetaCharacterInfo>(e, MetaCharacterInfo{name, (uint32_t)e});
+    reg.emplace<MetaCharacterInfo>(e, info);
     reg.emplace<Identity>(e, Identity{identity, false});
     reg.emplace<Faction>(e, Faction{faction});
     reg.emplace<Attributes>(e);

@@ -95,7 +95,7 @@ InheritParentConfig: false
 # Compiler flags for proper parsing (adjust if needed)
 # These help clang-tidy understand Windows/MinGW specifics
 ExtraArgs:
-  - '-std=c++20'
+  - '-std=c++23'
   - '-D_WIN32_WINNT=0x0601'
   - '-DASIO_STANDALONE'
   - '-DUNICODE'
@@ -104,3 +104,4 @@ ExtraArgs:
 
 # User-specific suppressions (uncomment as needed)
 # - { key: readability-identifier-naming.IgnoreMainLikeFunctions, value: 'true' }
+HeaderFilterRegex: '^(?!.*third_party)(?!.*[/\\]third_party[/\\]).*$'

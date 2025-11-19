@@ -37,15 +37,17 @@ add_subdirectory(third_party/json)
 add_subdirectory(third_party/spdlog)
 add_subdirectory(third_party/proxy)
 add_subdirectory(third_party/asio)
+add_subdirectory(third_party/SDL)
+add_subdirectory(third_party/imgui)
+
 
 set(EXET_NAME PestManKill)
 add_executable(${EXET_NAME} ${SOURCES})
 target_include_directories(${EXET_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
-find_package(Qt6 COMPONENTS Core Widgets REQUIRED)
 
 
-target_link_libraries(${EXET_NAME} PRIVATE  asio::asio spdlog::spdlog_header_only msft_proxy4::proxy)
+target_link_libraries(${EXET_NAME} PRIVATE  asio::asio spdlog::spdlog_header_only msft_proxy4::proxy SDL3::SDL3 imgui::imgui )
 
 # Optional: install rule
 install(TARGETS ${EXET_NAME} 

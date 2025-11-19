@@ -14,16 +14,17 @@
  */
 
 #pragma once
+#include <cstdint>
 #include <entt/entity/fwd.hpp>
 #include <string>
 #include <functional>
 #include <entt/entt.hpp>
 #include <vector>
 #include "src/common/Common.h"
-struct Effect
+struct SkillEffect
 {
     SkillType type;
-    std::function<void(entt::entity user, std::vector<entt::entity> target, entt::registry& reg)> apply;
+    entt::delegate<void(entt::entity, std::span<entt::entity>, entt::registry&)> apply;
     std::vector<entt::entity> target;
 };
 
@@ -38,19 +39,28 @@ struct SkillOwner
     entt::entity owner = entt::null;
 };
 
+struct SkillTarget
+{
+    bool needTarget = true;
+    uint8_t maxTargets = 1;
+    uint8_t minTargets = 1;
+
+    std::function<bool(entt::entity)> filter; // 目标筛选规则
+};
+
 inline entt::entity
-    CreateSkill(const MetaSkillInfo& info, const Effect& effect, const SkillOwner& owner, entt::registry& reg)
+    CreateSkill(const MetaSkillInfo& info, const SkillEffect& effect, const SkillOwner& owner, entt::registry& reg)
 {
     auto e = reg.create();
     reg.emplace<MetaSkillInfo>(e, info);
-    reg.emplace<Effect>(e, effect);
+    reg.emplace<SkillEffect>(e, effect);
     reg.emplace<SkillOwner>(e, owner);
     return e;
 }
 
-inline void WuShengFunc(entt::entity user, std::vector<entt::entity> target, entt::registry& reg) {
+inline void WuShengFunc(entt::entity user, std::span<entt::entity> target, entt::registry& reg) {
 
 };
-inline void WuShuangFunc(entt::entity user, std::vector<entt::entity> target, entt::registry& reg) {
+inline void WuShuangFunc(entt::entity user, std::span<entt::entity> target, entt::registry& reg) {
 
 };

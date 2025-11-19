@@ -3,12 +3,14 @@
 // 回合的阶段
 enum class TurnPhase : uint8_t
 {
+    GAME_START,
     START,   // 回合开始阶段
     JUDGE,   // 判定阶段
     DRAW,    // 摸牌阶段
     PLAY,    // 出牌阶段
     DISCARD, // 弃牌阶段
-    END      // 回合结束阶段
+    END,     // 回合结束阶段
+    GAME_OVER
 };
 
 enum class GameMode : uint8_t
@@ -19,7 +21,7 @@ enum class GameMode : uint8_t
     CHANLLENGE_PEST
 };
 
-enum class Gender : uint8_t
+enum class GenderType : uint8_t
 {
     FEMALE,
     MALE,
@@ -60,7 +62,16 @@ enum class CardType : uint8_t
 
 enum class StatusType : uint8_t
 {
-    POISONED,
+    HORIZONTAL_PLACEMENT, // 横置
     STUNNED,
     SHIELDED
+};
+
+enum class Suit : uint8_t
+{
+    HEARTS,   // 红桃
+    DIAMONDS, // 方块
+    CLUBS,    // 梅花
+    SPADES,   // 黑桃
+    JOKER     // 小王或大王
 };
