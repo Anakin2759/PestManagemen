@@ -71,3 +71,4 @@ npm-debug.log*
 # 自定义忽略
 # 添加您特定需要忽略的文件或目录
 others/
+third_party/imgui
