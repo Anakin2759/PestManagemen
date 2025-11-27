@@ -34,6 +34,5 @@ public:
 
 private:
     std::vector<entt::poly<ISystem>> m_systems;
-    std::uint64_t m_nextId = 0;
     GameContext& m_context;
 };

@@ -1,111 +1,130 @@
 ---
-# clang-tidy configuration for MinGW GCC 15.2 + C++20 project
-# Optimized for modern C++ with EnTT, ASIO, Qt6, and proxy patterns
-
 Checks: >
-  -*,
-  -llvmlibc-implementation-in-namespace,
-  bugprone-*,
-  -bugprone-easily-swappable-parameters,
-  -bugprone-exception-escape,
   cert-*,
-  -cert-err58-cpp,
+  bugprone-*,
   clang-analyzer-*,
-  -clang-analyzer-alpha*,
   concurrency-*,
   cppcoreguidelines-*,
+  modernize-*,
+  performance-*,
+  portability-*,
+  readability-*,
+  hicpp-*,
+  misc-*,
+  -bugprone-easily-swappable-parameters,
+  -bugprone-exception-escape,
+  -cert-err58-cpp,
   -cppcoreguidelines-avoid-magic-numbers,
   -cppcoreguidelines-avoid-const-or-ref-data-members,
   -cppcoreguidelines-pro-bounds-array-to-pointer-decay,
   -cppcoreguidelines-pro-bounds-pointer-arithmetic,
   -cppcoreguidelines-pro-type-reinterpret-cast,
   -cppcoreguidelines-avoid-do-while,
-  modernize-*,
   -modernize-use-trailing-return-type,
   -modernize-avoid-c-arrays,
-  performance-*,
   -performance-avoid-endl,
-  portability-*,
-  readability-*,
   -readability-magic-numbers,
   -readability-identifier-length,
   -readability-function-cognitive-complexity,
   -readability-else-after-return,
   -readability-avoid-const-params-in-decls,
-  -readability-convert-member-functions-to-static, 
-  hicpp-*,
+  -readability-convert-member-functions-to-static,
   -hicpp-avoid-c-arrays,
   -hicpp-no-array-decay,
   -hicpp-uppercase-literal-suffix,
-  misc-*,
   -misc-non-private-member-variables-in-classes,
   -misc-use-anonymous-namespace
 
 CheckOptions:
-  # Naming conventions
-  - { key: readability-identifier-naming.NamespaceCase,           value: lower_case }
-  - { key: readability-identifier-naming.ClassCase,               value: CamelCase  }
-  - { key: readability-identifier-naming.StructCase,              value: ''  }
-  - { key: readability-identifier-naming.EnumCase,                value: CamelCase  }
-  - { key: readability-identifier-naming.FunctionCase,            value: CamelCase  }
-  - { key: readability-identifier-naming.MethodCase,              value: camelBack  }
-  - { key: readability-identifier-naming.VariableCase,            value: camelBack  }
-  - { key: readability-identifier-naming.ParameterCase,           value: camelBack  }
-  - { key: readability-identifier-naming.ParameterIgnoredRegexp,  value: '^pro_.*'  }
-  - { key: readability-identifier-naming.MemberCase,              value: camelBack  }
-  - { key: readability-identifier-naming.MemberIgnoredRegexp,     value: '^pro_.*'  }
-  - { key: readability-identifier-naming.PrivateMemberPrefix,     value: 'm_'        }
-  - { key: readability-identifier-naming.ConstantCase,            value: UPPER_CASE }
-  - { key: readability-identifier-naming.EnumConstantCase,        value: UPPER_CASE }
-  - { key: readability-identifier-naming.GlobalConstantCase,      value: UPPER_CASE }
-  - { key: readability-identifier-naming.StaticConstantCase,      value: UPPER_CASE }
-  - { key: readability-identifier-naming.ClassIgnoredRegexp, value: '^(type|impl|tag|proxy|base)$' }
-  
-  # Modern C++ settings
-  - { key: modernize-use-nullptr.NullMacros,                      value: 'NULL'     }
-  - { key: modernize-use-auto.MinTypeNameLength,                  value: '5'        }
-  - { key: modernize-loop-convert.MinConfidence,                  value: 'reasonable' }
-  
-  # Performance tuning
-  - { key: performance-move-const-arg.CheckTriviallyCopyableMove, value: 'true'     }
-  - { key: performance-unnecessary-value-param.AllowedTypes,      value: 'entt::entity;entt::registry' }
-  
-  # Readability
-  - { key: readability-function-size.LineThreshold,               value: '100'      }
-  - { key: readability-function-size.StatementThreshold,          value: '80'       }
-  - { key: readability-function-size.BranchThreshold,             value: '15'       }
-  - { key: readability-function-size.ParameterThreshold,          value: '8'        }
-  - { key: readability-braces-around-statements.ShortStatementLines, value: '1'     }
-  
-  # Allow certain patterns common in game dev
-  - { key: cppcoreguidelines-special-member-functions.AllowSoleDefaultDtor, value: 'true' }
-  - { key: cppcoreguidelines-special-member-functions.AllowMissingMoveFunctions, value: 'true' }
-  - { key: misc-include-cleaner.IgnoreHeaders, value: 'mimalloc-new-delete.h' }
+  # === Naming Conventions ===
+  - key: readability-identifier-naming.NamespaceCase
+    value: lower_case
+  - key: readability-identifier-naming.ClassCase
+    value: CamelCase
+  - key: readability-identifier-naming.EnumCase
+    value: CamelCase
+  - key: readability-identifier-naming.FunctionCase
+    value: CamelCase
+  - key: readability-identifier-naming.MethodCase
+    value: camelBack
+  - key: readability-identifier-naming.VariableCase
+    value: camelBack
+  - key: readability-identifier-naming.ParameterCase
+    value: camelBack
+  - key: readability-identifier-naming.ParameterIgnoredRegexp
+    value: '^pro_.*'
+  - key: readability-identifier-naming.MemberCase
+    value: camelBack
+  - key: readability-identifier-naming.MemberIgnoredRegexp
+    value: '^pro_.*'
+  - key: readability-identifier-naming.PrivateMemberPrefix
+    value: m_
+  - key: readability-identifier-naming.ConstantCase
+    value: UPPER_CASE
+  - key: readability-identifier-naming.EnumConstantCase
+    value: UPPER_CASE
+  - key: readability-identifier-naming.GlobalConstantCase
+    value: UPPER_CASE
+  - key: readability-identifier-naming.StaticConstantCase
+    value: UPPER_CASE
+  - key: readability-identifier-naming.ClassIgnoredRegexp
+    value: '^(type|impl|tag|proxy|base)$'
 
-# Header filter: only check project headers, not third_party
-HeaderFilterRegex: '^(?!.*third_party)(?!.*\\\\third_party).*'
+  # === Modern C++ ===
+  - key: modernize-use-nullptr.NullMacros
+    value: NULL
+  - key: modernize-use-auto.MinTypeNameLength
+    value: '5'
+  - key: modernize-loop-convert.MinConfidence
+    value: reasonable
 
-# Treat warnings as errors in CI, but allow local dev flexibility
-# WarningsAsErrors: ''
+  # === Performance ===
+  - key: performance-move-const-arg.CheckTriviallyCopyableMove
+    value: 'true'
+  - key: performance-unnecessary-value-param.AllowedTypes
+    value: 'entt::entity;entt::registry'
 
-# System headers (suppress warnings from Qt, EnTT, ASIO, etc.)
+  # === Readability ===
+  - key: readability-function-size.LineThreshold
+    value: '100'
+  - key: readability-function-size.StatementThreshold
+    value: '80'
+  - key: readability-function-size.BranchThreshold
+    value: '15'
+  - key: readability-function-size.ParameterThreshold
+    value: '8'
+  - key: readability-braces-around-statements.ShortStatementLines
+    value: '1'
+
+  # === Special Member Functions (for RAII types) ===
+  - key: cppcoreguidelines-special-member-functions.AllowSoleDefaultDtor
+    value: 'true'
+  - key: cppcoreguidelines-special-member-functions.AllowMissingMoveFunctions
+    value: 'true'
+
+  # === Include Cleaner ===
+  - key: misc-include-cleaner.IgnoreHeaders
+    value: mimalloc-new-delete.h
+
+# Only check project headers
+HeaderFilterRegex: '^(?!.*(third_party|external|vendor))(?!.*[\\/](third_party|external|vendor)).*'
+
+# Enable warnings as errors in CI
+# WarningsAsErrors: '*'
+
+# Don't show warnings from system headers
 SystemHeaders: false
 
-# Use .clang-tidy file from parent directories if not found
+# Don't inherit .clang-tidy from parent folders
 InheritParentConfig: false
 
-# Format style (optional, can remove if using separate .clang-format)
-# FormatStyle: file
-
-# Compiler flags for proper parsing (adjust if needed)
-# These help clang-tidy understand Windows/MinGW specifics
+# Compiler args for correct parsing
 ExtraArgs:
-  - '-std=c++23'
-  - '-D_WIN32_WINNT=0x0601'
-  - '-DASIO_STANDALONE'
-  - '-DUNICODE'
-  - '-D_UNICODE'
-  - '-Wno-unknown-pragmas'
+  - -std=c++23
+  - -D_WIN32_WINNT=0x0601
+  - -DASIO_STANDALONE
+  - -DUNICODE
+  - -D_UNICODE
+  - -Wno-unknown-pragmas
 
-# User-specific suppressions (uncomment as needed)
-# - { key: readability-identifier-naming.IgnoreMainLikeFunctions, value: 'true' }
+...

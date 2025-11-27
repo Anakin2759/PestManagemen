@@ -1,14 +1,14 @@
 /**
  * ************************************************************************
- * 
+ *
  * @file TurnSystem.h
  * @author AnakinLiu (azrael2759@qq.com)
  * @date 2025-11-25
  * @version 0.1
  * @brief 回合系统定义
    处理游戏回合流程
-   
- * 
+
+ *
  * ************************************************************************
  * @copyright Copyright (c) 2025 AnakinLiu
  * For study and research only, no reprinting.
@@ -19,7 +19,7 @@
 #include <entt/entt.hpp>
 #include "src/context/GameContext.h"
 #include "src/components/Events.h"
-#include <iostream>
+
 class TurnSystem
 {
 public:
