@@ -1,5 +1,7 @@
 #pragma once
 #include <cstdint>
+#include <entt/entt.hpp>
+#include <span>
 // 回合的阶段
 enum class TurnPhase : uint8_t
 {
@@ -52,22 +54,43 @@ enum class SkillType : uint8_t
     PHASELIMITED,
     AWAKENING // 觉醒
 };
+/************************* */
 
 enum class CardType : uint8_t
 {
     BASIC,
     TRICK,
-    EQUIPMENT
+    EQUIP
+};
+
+enum class BasicCardType : uint8_t
+{
+    ATTACK,  // 攻击
+    DODGE,   // 闪避
+    ALCOHOL, // 酒
+    PEACH,   // 桃子
+};
+
+enum class TrickCardType : uint8_t
+{
+
+};
+
+enum class EquipCardType : uint8_t
+{
+    WEAPON,       // 武器
+    ARMOR,        // 防具
+    ATTACK_HORSE, // 攻击马
+    DEFENSE_HORSE // 防御马
 };
 
 enum class StatusType : uint8_t
 {
-    HORIZONTAL_PLACEMENT, // 横置
-    STUNNED,
-    SHIELDED
+    FLIP, // 翻面
+    TAP   // 横置
 };
 
-enum class Suit : uint8_t
+enum class SuitType : uint8_t
 {
     HEARTS,   // 红桃
     DIAMONDS, // 方块
@@ -75,3 +98,5 @@ enum class Suit : uint8_t
     SPADES,   // 黑桃
     JOKER     // 小王或大王
 };
+
+using Effect = entt::delegate<void(entt::entity, std::span<entt::entity>, entt::registry&)>;

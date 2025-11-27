@@ -22,5 +22,5 @@ struct GameContext
     entt::registry registry;     // 实体组件系统注册表
     entt::dispatcher dispatcher; // 事件分发器
     std::shared_ptr<spdlog::logger> logger = CreateRollingLogger();
-    asio::thread_pool threadPool{std::thread::hardware_concurrency() * 2}; // 线程池
+    asio::thread_pool threadPool{static_cast<std::size_t>(std::thread::hardware_concurrency()) * 2}; // 线程池
 };

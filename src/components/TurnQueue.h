@@ -17,5 +17,5 @@
 #include <entt/entt.hpp>
 struct TurnQueue
 {
-    CircularQueue<entt::entity, 8> queue;
+    CircularQueue<entt::entity, 8> queue;// 最多支持8个角色的循环队列
 };

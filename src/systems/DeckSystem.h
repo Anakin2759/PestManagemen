@@ -1,31 +1,38 @@
 /**
  * ************************************************************************
  *
- * @file GameFlowSystem.h
+ * @file DeckSystem.h
  * @author AnakinLiu (azrael2759@qq.com)
- * @date 2025-11-18
+ * @date 2025-11-27
  * @version 0.1
- * @brief 游戏流程控制系统
+ * @brief
  *
  * ************************************************************************
  * @copyright Copyright (c) 2025 AnakinLiu
  * For study and research only, no reprinting.
  * ************************************************************************
  */
-
 #pragma once
-
+#include <entt/entt.hpp>
 #include "src/context/GameContext.h"
-#include "src/components/GameData.h"
-#include "src/components/Event.h"
-class GameFlowSystem
+#include "src/components/Deck.h"
+#include "src/components/Events.h"
+
+class DeckSystem
 {
 public:
-    void start(GameContext& context)
+    explicit DeckSystem(GameContext& context) : m_context(context)
     {
-        // 初始化游戏状态，发起游戏开始事件等
-        context.registry.ctx().emplace<GameData>();
+        m_context.logger->info("DeckSystem 初始化");
+        m_context.registry.ctx().emplace<Deck>();
     };
-    void pause(GameContext& context);
-    void stop(GameContext& context);
+    void registerEvents() {
+
+    };
+    void unregisterEvents() {
+
+    };
+
+private:
+    GameContext& m_context;
 };

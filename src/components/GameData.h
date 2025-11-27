@@ -25,4 +25,5 @@ struct GameData
     GameMode mode = GameMode::CHANLLENGE_PEST;
     entt::entity currentPlayer = entt::null;
     uint32_t round = 0;
+    uint8_t responseTime = 10; // 默认响应时间10秒
 };

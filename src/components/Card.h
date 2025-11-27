@@ -18,12 +18,14 @@
 #include <string>
 #include <functional>
 #include <entt/entt.hpp>
+#include <vector>
 #include "src/common/Common.h"
+
 struct MetaCardInfo
 {
     std::string name;
     std::string description; // 新增描述字段
-    CardType type;
+    CardType type = CardType::BASIC;
 };
 
 struct CardCost
@@ -44,12 +46,27 @@ struct CardTarget
 
 struct CardPointAndSuit
 {
-    uint8_t point = 0;       // 0表示无点数，1-13分别表示A到K
-    Suit suit = Suit::JOKER; // JOKER表示无花色
+    uint8_t point = 0;               // 0表示无点数，1-13分别表示A到K
+    SuitType suit = SuitType::JOKER; // JOKER表示无花色
 };
 struct CardEffect
 {
     entt::delegate<void(entt::entity, std::span<entt::entity>, entt::registry&)> apply;
+};
+
+struct BasicCardTypeTag
+{
+    BasicCardType type;
+};
+
+struct TrickCardTypeTag
+{
+    TrickCardType type;
+};
+
+struct EquipCardTypeTag
+{
+    EquipCardType type;
 };
 
 inline entt::entity CreateCard(entt::registry& reg,
@@ -66,6 +83,13 @@ inline entt::entity CreateCard(entt::registry& reg,
     reg.emplace<CardPointAndSuit>(e, pointAndSuit);
     reg.emplace<CardEffect>(e, effect);
     return e;
+}
+
+inline std::vector<entt::entity> CreateStandardDeck(entt::registry& reg)
+{
+    std::vector<entt::entity> deck;
+
+    return deck;
 }
 
 inline void FireAttackEffect(entt::entity user, std::span<entt::entity> target, entt::registry& reg) {
@@ -90,7 +114,7 @@ inline void PeachEffect(entt::entity user, std::span<entt::entity> target, entt:
 
 inline void SlashEffect(entt::entity user, std::span<entt::entity> target, entt::registry& reg) {
     // 实现杀效果的逻辑
-    
+
 };
 
 inline void ThunderSlashEffect(entt::entity user, std::span<entt::entity> target, entt::registry& reg) {

@@ -1,40 +1,75 @@
+/**
+ * ************************************************************************
+ *
+ * @file App.h
+ * @author AnakinLiu (azrael2759@qq.com)
+ * @date 2025-11-27
+ * @version 0.1
+ * @brief
+ *
+ * ************************************************************************
+ * @copyright Copyright (c) 2025 AnakinLiu
+ * For study and research only, no reprinting.
+ * ************************************************************************
+ */
 #pragma once
-#include <SDL3/SDL.h>
-#include <SDL3/SDL_gpu.h>
-#include <imgui.h>
-#include <imgui.h>
-#include <imgui_impl_sdl3.h>
-#include <imgui_impl_sdlrenderer3.h>
-#include <stdexcept>
-#include <string>
-#include <vector>
+
+#include "src/view/ALayout.h"
+#include "src/view/ALabel.h"
+#include "src/view/AButton.h"
+#include <entt/entt.hpp>
+#include <iostream>
+
+// 主应用类
 class App
 {
 public:
-    App(const char* title, int width, int height) : window_(nullptr), renderer_(nullptr), running_(true)
+    App(const char* title, int width, int height)
     {
-        if (!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS)) throw std::runtime_error(SDL_GetError());
+        if (!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS))
+        {
+            std::cerr << "SDL_Init Error: " << SDL_GetError() << std::endl;
+            throw std::runtime_error(SDL_GetError());
+        }
 
-        window_ = SDL_CreateWindow(title, width, height, SDL_WINDOW_RESIZABLE);
-        if (!window_) throw std::runtime_error(SDL_GetError());
+        m_window = SDL_CreateWindow(title, width, height, SDL_WINDOW_RESIZABLE);
+        if (m_window == nullptr)
+        {
+            throw std::runtime_error(SDL_GetError());
+        }
 
-        renderer_ = SDL_CreateRenderer(window_, nullptr);
-        if (!renderer_) throw std::runtime_error(SDL_GetError());
+        m_renderer = SDL_CreateRenderer(m_window, nullptr);
+        if (m_renderer == nullptr)
+        {
+            throw std::runtime_error(SDL_GetError());
+        }
 
         initImGui();
+        setupUI();
     }
 
-    ~App()
+    virtual ~App()
     {
         shutdownImGui();
-        if (renderer_) SDL_DestroyRenderer(renderer_);
-        if (window_) SDL_DestroyWindow(window_);
+        if (m_renderer == nullptr)
+        {
+            SDL_DestroyRenderer(m_renderer);
+        }
+        if (m_window == nullptr)
+        {
+            SDL_DestroyWindow(m_window);
+        }
         SDL_Quit();
     }
 
+    App(const App&) = delete;
+    App& operator=(const App&) = delete;
+    App(App&&) = delete;
+    App& operator=(App&&) = delete;
+
     void run()
     {
-        while (running_)
+        while (m_running)
         {
             processEvents();
             render();
@@ -42,94 +77,84 @@ public:
     }
 
 protected:
+    virtual void setupUI()
+    {
+        // 创建主布局
+        auto mainLayout = std::make_shared<AVBoxLayout>();
+        mainLayout->setSpacing(10);
+        mainLayout->setMargins(10, 10, 10, 10);
+
+        // 顶部信息栏
+        auto topLayout = std::make_shared<AHBoxLayout>();
+        topLayout->addWidget(std::make_shared<ALabel>("回合: 1"));
+        topLayout->addWidget(std::make_shared<ALabel>("当前玩家: 刘备"));
+        auto endTurnButton = std::make_shared<AButton>("结束回合");
+        topLayout->addWidget(endTurnButton);
+
+        // 主游戏区域
+        auto gameAreaLayout = std::make_shared<AHBoxLayout>();
+        gameAreaLayout->setSpacing(15);
+
+        // 左侧玩家区域
+        auto playerLayout = std::make_shared<AVBoxLayout>();
+        playerLayout->addWidget(std::make_shared<ALabel>("玩家状态"));
+        playerLayout->addWidget(std::make_shared<ALabel>("血量: 100"));
+
+        // 右侧操作区域
+        auto actionLayout = std::make_shared<AVBoxLayout>();
+        actionLayout->addWidget(std::make_shared<ALabel>("可用操作"));
+
+        auto cardLayout = std::make_shared<AHBoxLayout>();
+        for (int i = 0; i < 5; ++i)
+        {
+            auto cardAButton = std::make_shared<AButton>("杀" + std::to_string(i + 1));
+            cardLayout->addWidget(cardAButton);
+        }
+        actionLayout->addWidget(std::make_shared<ALabel>("手牌:"));
+        actionLayout->addWidget(cardLayout);
+
+        gameAreaLayout->addWidget(playerLayout);
+        gameAreaLayout->addWidget(actionLayout);
+
+        // 底部状态栏
+        auto bottomLayout = std::make_shared<AHBoxLayout>();
+        bottomLayout->addWidget(std::make_shared<ALabel>("游戏状态: 进行中"));
+
+        // 组合所有布局
+        mainLayout->addWidget(topLayout);
+        mainLayout->addWidget(gameAreaLayout);
+        mainLayout->addWidget(bottomLayout);
+
+        m_rootLayout = mainLayout;
+    }
+
     virtual void onGui()
     {
         ImGui::SetNextWindowPos(ImVec2(0, 0));
-        ImGui::SetNextWindowSize(ImVec2(1280, 720));
+        ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
 
-        ImGui::Begin("三国杀主界面",
+        ImGui::Begin("MainWindow",
                      nullptr,
-                     ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse |
-                         ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollbar);
+                     static_cast<ImGuiWindowFlags>(static_cast<unsigned int>(ImGuiWindowFlags_NoTitleBar) |
+                                                   static_cast<unsigned int>(ImGuiWindowFlags_NoResize) |
+                                                   static_cast<unsigned int>(ImGuiWindowFlags_NoMove) |
+                                                   static_cast<unsigned int>(ImGuiWindowFlags_NoScrollbar) |
+                                                   static_cast<unsigned int>(ImGuiWindowFlags_NoCollapse)));
 
-        // --- 获取可用区域 ---
-        ImVec2 avail = ImGui::GetContentRegionAvail();
-        float mainHeight = avail.y * 0.7f; // 主区域 70%
-        float handHeight = avail.y * 0.3f; // 手牌区域 30%
-        float sideWidth = 200.0f;          // 右下角角色贴图宽度
-
-        // --- 主区域 ---
-        ImGui::BeginChild("主区域", ImVec2(avail.x, mainHeight), true);
+        if (m_rootLayout)
         {
-            ImGui::Text("玩家操作区:");
-            if (ImGui::Button("结束回合"))
-            { /* 回合结束逻辑 */
-            }
-
-            ImGui::Text("回合: 1");
-            ImGui::Text("当前玩家: 刘备");
-
-            ImGui::Separator();
-
-            ImGui::Text("其他游戏信息...");
+            ImVec2 avail = ImGui::GetContentRegionAvail();
+            m_rootLayout->render(ImVec2(0, 0), avail);
         }
-        ImGui::EndChild();
-
-        // --- 手牌区域 + 右下角角色贴图 ---
-        ImGui::BeginChild("底部区域", ImVec2(avail.x, handHeight), false);
-        {
-            // 左侧手牌区域
-            ImGui::BeginChild("手牌区域", ImVec2(avail.x - sideWidth, handHeight), true);
-            {
-                ImGui::Text("玩家手牌:");
-                ImGui::SameLine();
-                for (int i = 0; i < 5; ++i)
-                {
-                    std::string cardName = "杀" + std::to_string(i + 1);
-                    if (ImGui::Button(cardName.c_str()))
-                    {
-                        show_modal = true;
-                    }
-                    ImGui::SameLine();
-                }
-            }
-            ImGui::EndChild();
-
-            // 右下角角色贴图区域
-            ImGui::SameLine();
-            ImGui::BeginChild("角色贴图区域", ImVec2(sideWidth, handHeight), true);
-            {
-                ImGui::Text("刘备");
-                // TODO: ImGui::Image 绘制角色贴图
-            }
-            ImGui::EndChild();
-        }
-        ImGui::EndChild();
 
         ImGui::End();
-
-        // --- 模态窗口 ---
-        if (show_modal) ImGui::OpenPopup("选择目标");
-        if (ImGui::BeginPopupModal("选择目标", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
-        {
-            ImGui::Text("请选择目标玩家:");
-            static std::vector<std::string> targets = {"关羽", "张飞", "曹操"};
-            for (auto& t : targets)
-            {
-                if (ImGui::Button(t.c_str()))
-                {
-                    show_modal = false;
-                    ImGui::CloseCurrentPopup();
-                }
-            }
-            ImGui::EndPopup();
-        }
     }
 
 private:
-    SDL_Window* window_;
-    SDL_Renderer* renderer_;
-    bool running_;
+    SDL_Window* m_window = nullptr;
+    SDL_Renderer* m_renderer = nullptr;
+    bool m_running = true;
+    std::shared_ptr<ALayout> m_rootLayout;
 
     void processEvents()
     {
@@ -140,7 +165,7 @@ private:
 
             if (event.type == SDL_EVENT_QUIT)
             {
-                running_ = false;
+                m_running = false;
             }
         }
     }
@@ -154,10 +179,10 @@ private:
         onGui();
 
         ImGui::Render();
-        SDL_SetRenderDrawColor(renderer_, 30, 30, 30, 255);
-        SDL_RenderClear(renderer_);
-        ImGui_ImplSDLRenderer3_RenderDrawData(ImGui::GetDrawData(), renderer_);
-        SDL_RenderPresent(renderer_);
+        SDL_SetRenderDrawColor(m_renderer, 30, 30, 30, 255);
+        SDL_RenderClear(m_renderer);
+        ImGui_ImplSDLRenderer3_RenderDrawData(ImGui::GetDrawData(), m_renderer);
+        SDL_RenderPresent(m_renderer);
     }
 
     void initImGui()
@@ -165,28 +190,24 @@ private:
         IMGUI_CHECKVERSION();
         ImGui::CreateContext();
         ImGui::StyleColorsDark();
+
         ImGuiIO& io = ImGui::GetIO();
+        ImFontConfig fontCfg;
+        fontCfg.OversampleH = 3;
+        fontCfg.OversampleV = 1;
+        fontCfg.PixelSnapH = true;
 
-        // 创建字体
-        ImFontConfig font_cfg;
-        font_cfg.OversampleH = 3; // 水平采样，提高清晰度
-        font_cfg.OversampleV = 1;
-        font_cfg.PixelSnapH = true;
-
-        // 加载中文字体
         io.Fonts->AddFontFromFileTTF(
-            "C:/Windows/Fonts/msyh.ttc", 18.0f, &font_cfg, io.Fonts->GetGlyphRangesChineseFull());
+            "C:/Windows/Fonts/msyh.ttc", 18.0F, &fontCfg, io.Fonts->GetGlyphRangesChineseFull());
 
-        // 构建字体纹理
-        ImGui_ImplSDL3_InitForSDLRenderer(window_, renderer_);
-        ImGui_ImplSDLRenderer3_Init(renderer_);
+        ImGui_ImplSDL3_InitForSDLRenderer(m_window, m_renderer);
+        ImGui_ImplSDLRenderer3_Init(m_renderer);
     }
 
-    void shutdownImGui()
+    static void shutdownImGui()
     {
         ImGui_ImplSDLRenderer3_Shutdown();
         ImGui_ImplSDL3_Shutdown();
         ImGui::DestroyContext();
     }
-    bool show_modal = true;
 };

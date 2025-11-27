@@ -64,21 +64,21 @@ struct Equipments
 struct Attributes
 {
     uint32_t maxHealth = 4;
-    uint32_t currentHealth = 4;
     uint32_t attackPower = 1;
     uint32_t defense = 0;
     uint32_t attackRange = 1;
     uint32_t movement = 1;
     uint8_t rank = 0;
     uint8_t attackTimes = 1;
+    int32_t currentHealth = 4;
     bool isAlive = true;
 };
 
 struct Status
 {
-    uint8_t duration = 0;                               // 持续回合数，0表示永久
-    TurnPhase appliedPhase = TurnPhase::START;          // 状态应用的阶段
-    StatusType type = StatusType::HORIZONTAL_PLACEMENT; // 状态类型
+    uint8_t duration = 0;                      // 持续回合数，0表示永久
+    TurnPhase appliedPhase = TurnPhase::START; // 状态应用的阶段
+    StatusType type = StatusType::FLIP;        // 状态类型
 };
 
 struct StatusFlags

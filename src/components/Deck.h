@@ -19,6 +19,7 @@
 
 struct Deck
 {
-    std::vector<entt::entity> drawPile;    // 抽牌堆
-    std::vector<entt::entity> discardPile; // 弃牌堆
+    std::vector<entt::entity> drawPile;       // 抽牌堆
+    std::vector<entt::entity> discardPile;    // 弃牌堆
+    std::vector<entt::entity> processingArea; // 处理区
 };
