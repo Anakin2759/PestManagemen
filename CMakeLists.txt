@@ -1,8 +1,11 @@
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 4.0)
 project(PestMan LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON) #生成compile_commands.json文件
+set(CMAKE_CXX_EXTENSIONS OFF)
+
 
 # Optionally enable clang-tidy static analysis. Can be overridden by passing
 # -DENABLE_CLANG_TIDY=OFF to CMake command line.
@@ -41,6 +44,7 @@ add_subdirectory(third_party/spdlog)
 add_subdirectory(third_party/asio)
 add_subdirectory(third_party/SDL)
 add_subdirectory(third_party/imgui)
+add_subdirectory(third_party/abseil-cpp)
 
 
 
@@ -64,7 +68,7 @@ target_include_directories(${EXET_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
 
 
-target_link_libraries(${EXET_NAME} PRIVATE mimalloc-static asio::asio spdlog::spdlog_header_only  SDL3::SDL3 imgui::imgui  EnTT::EnTT nlohmann_json::nlohmann_json)
+target_link_libraries(${EXET_NAME} PRIVATE mimalloc-static asio::asio spdlog::spdlog_header_only  SDL3::SDL3 imgui::imgui  EnTT::EnTT nlohmann_json::nlohmann_json absl::base absl::memory absl::strings)
 
 # Optional: install rule
 install(TARGETS ${EXET_NAME} 

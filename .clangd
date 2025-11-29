@@ -1,8 +1,10 @@
+If:
+  PathExclude: thrid_party/.*
 
 CompileFlags:
   # 使用项目根目录的 compile_commands.json
   CompilationDatabase: .
-  
+
   Add:
     # C++23 标准
     - "-std=c++23"
@@ -52,7 +54,6 @@ Diagnostics:
     # 添加 clang-tidy 的检查名以确保对函数形参（parameter）未使用的警告被抑制。
     # 常见检查名包括 "misc-unused-parameters"（clang-tidy）以及编译器产生的 "unused-parameter"。
     - "misc-unused-parameters"
-    - "llvmlibc-implementation-in-namespace"
 
 
 # 代码补全配置
@@ -62,3 +63,4 @@ Completion:
 # 索引配置
 Index:
   Background: Build
+

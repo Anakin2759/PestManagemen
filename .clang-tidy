@@ -1,5 +1,6 @@
 ---
 Checks: >
+  -*,
   cert-*,
   bugprone-*,
   clang-analyzer-*,
@@ -11,29 +12,19 @@ Checks: >
   readability-*,
   hicpp-*,
   misc-*,
+  concurrency-*,
   -bugprone-easily-swappable-parameters,
   -bugprone-exception-escape,
-  -cert-err58-cpp,
-  -cppcoreguidelines-avoid-magic-numbers,
-  -cppcoreguidelines-avoid-const-or-ref-data-members,
-  -cppcoreguidelines-pro-bounds-array-to-pointer-decay,
-  -cppcoreguidelines-pro-bounds-pointer-arithmetic,
-  -cppcoreguidelines-pro-type-reinterpret-cast,
-  -cppcoreguidelines-avoid-do-while,
   -modernize-use-trailing-return-type,
   -modernize-avoid-c-arrays,
   -performance-avoid-endl,
-  -readability-magic-numbers,
-  -readability-identifier-length,
-  -readability-function-cognitive-complexity,
-  -readability-else-after-return,
-  -readability-avoid-const-params-in-decls,
-  -readability-convert-member-functions-to-static,
   -hicpp-avoid-c-arrays,
   -hicpp-no-array-decay,
   -hicpp-uppercase-literal-suffix,
+  -fuchsia-default-arguments-calls,
+  -fuchsia-header-anon-namespaces,
+  -fuchsia-multiple-inheritance,
   -misc-non-private-member-variables-in-classes,
-  -misc-use-anonymous-namespace
 
 CheckOptions:
   # === Naming Conventions ===
@@ -126,5 +117,3 @@ ExtraArgs:
   - -DUNICODE
   - -D_UNICODE
   - -Wno-unknown-pragmas
-
-...
